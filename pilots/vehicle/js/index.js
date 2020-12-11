@@ -123,6 +123,10 @@ function make_slides(f) {
     }, 
 
     button : function() {
+
+    $("#error_num").hide();
+    $("#error_percept").hide();
+
     this.individual_judgment = $('input[name="individual_judgment"]:checked').val()
     this.population_judgment = $('input[name="population_judgment"]').val()
 
