@@ -124,15 +124,20 @@ function make_slides(f) {
 
     button : function() {
     this.individual_judgment = $('input[name="individual_judgment"]:checked').val()
-    this.population_judgment = $("#population_judgment").val()
-    if (this.individual_judgment === undefined || this.population_judgment === undefined) {
-      $("#error_num").hide();
+    this.population_judgment = $('input[name="population_judgment"]').val()
+
+    slidersnotfilledout = this.individual_judgment === undefined || this.population_judgment === undefined || this.population_judgment === ""
+    question2notnumber = !(between0and100(this.population_judgment))
+    
+    if(question2notnumber){
+      $("#error_num").show();
+    } 
+
+    if(slidersnotfilledout) {
       $("#error_percept").show();
-      if(!(between0and100(this.population_judgment))){
-        $("#error_num").show();
-      } 
-    } else {
-      $("#error_percept").hide();
+    }
+
+    if(!(question2notnumber || slidersnotfilledout)) {
       this.log_responses();
       _stream.apply(this);
       }
