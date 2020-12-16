@@ -111,7 +111,7 @@ function make_slides(f) {
  
     // PRESENT THE SLIDE
     present_handle: function(stim) {
-      $('input[name="individual_judgment"]').attr('checked', false);
+      $('input[name="individual_judgment"]').prop('checked', false);
       document.getElementById("population_judgment").value = ""; 
       this.trial_start = new Date();
       exp.vignette = stim.item;
