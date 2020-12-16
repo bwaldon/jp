@@ -1,14 +1,3 @@
-<script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
-<script type="text/javascript">
-(function(){
-    var ut_id = "1a48a7e4d9ab970240eaa15c176c7175";
-    if (UTWorkerLimitReached(ut_id)) {
-        document.getElementById('mturk_form').style.display = 'none';
-        document.getElementsByTagName('body')[0].innerHTML = "You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.";
-    }
-})();
-</script>
-
 <html>
 
 <head>
@@ -72,8 +61,8 @@
 <div class="slide" id="i0" >
     <img src="shared/images/alps_lab.png" alt="Alps Lab" id="alpslogo" style="width:300"></img>
     <!-- <p id="cocolab">Stanford ALPS Lab</p> -->
-    <p id="instruct-text" style = "text-align:justify">
-      In this study, you'll read one short passage and answer a couple questions about it. We estimate that the study will take 3-5 minutes complete. <!-- <font style = "color:red"><strong> Please only participate once today (there are multiple versions of this study currently online, and we won't compensate for multiple participation). </strong></font> --> Finally, be sure to read the passage carefully, as you'll be asked one comprehension question at the end of the study. Thanks for participating!
+    <p id="instruct-text" align = "justify">
+      In this study, you'll see a series of images and answer the same two questions about each. We're interested in what you consider to be a <b>vehicle</b> as well as your beliefs about what others consider to be a vehicle. We estimate that the study will take 3-5 minutes to complete. Thanks for participating!
     </p>
     <button id="start_button" type="button">Start Experiment</button>
     <br><br><br>
@@ -94,47 +83,69 @@
     <br>
 
     <div id="perception"> 
-      <!-- <p id="speakerutt">{{}}</p>
-      <p id="exchange">{{}}</p> -->
+
       <p>
-      <div id="vignette" style = "text-align: justify; font-family: Arial, Helvetica, sans-serif;background-color: #faeeca;padding:10px;border: 5px solid gray;"></div>
+
+      <div id="image" style = "justify-content: center; font-family: Arial, Helvetica, sans-serif;/*background-color: #faeeca*/;padding:10px;border: 5px solid gray;">
+        
+       
+      </div>
 
       <hr>
 
-      <div id="question1" style = "float: left;display:inline;"><div id = "question" style = "text-align:left;display:inline;"></div><label><input type="radio"  name="individual_judgment" value="yes"/>Yes</label>
-      <label><input type="radio"  name="individual_judgment" value="no"/>No</label>
-      <label><input type="radio"  name="individual_judgment" value="cantdecide"/>Can't decide</label></div><p>
-     
+      <center>
 
-      <i><div id="question2" style = "float: left; display:inline; text-align: left;"></div><input type="text" style = "display:inline;" name="population_judgment" size=4></i><p>
+      <p id="confirm" hidden style = "color:black"><b>Please confirm your answers before proceeding.</b></p>
 
-       <p id="error_num" style = "color:red">Please provide a number between 0 and 1000.</p>
+      <!-- QUESTION 1 - CORRECT RESPONSE -->
 
-<!--       <i><div id="question2" style = "text-align: left">3. How confident are you in your answer to question (1)?</i>  <select id="confidence">
-      <label><option value="-1"/></label>
-      <label><option value="0"/>Not at all Confident</label>
-      <label><option value="1"/>Slightly Confident</label>
-      <label><option value="2"/>Moderately Confident</label>
-      <label><option value="3"/>Very Confident</label>
-      <label><option value="4"/>Totally Confident</label>
-    </select></div> -->
-  
+      <div id="question1" style = "/*display:inline*/;">
+        <div id = "prompt1" style = "float:left;text-align:left;font-style:italic">
+         <b>Question 1:</b> Is the object in the above display a <b>vehicle</b>?
+        </div>
+
+          <table style = "text-align:center;table-layout: fixed;width: 600px;padding-top: 20px">
+            <tr style = "vertical-align:top;">
+              <td><input type="radio"  name="individual_judgment" id = "individual_judgment" value="yes"/></td></input>
+              <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
+              <td><input type="radio"  name="individual_judgment" id = "individual_judgment" value="no"/></td></input>
+            </tr>
+            <tr>
+              <td><div id = "responseyes">Yes</div></td>
+              <td><div id = "responseno">No</div></td>
+          </table>
+        </div>
+
+      <p>
+
+      <!-- QUESTION 2 - AGREEMENT -->
+
+      <div id="question2" style = "margin-bottom:20px; float: left; text-align: left; "><i><b>Question 2:</b> We plan to recruit 100 people to take a future version of this study. How many of the 100 people do you think will agree with your answer to Question 1? </i> <input type="text" id="population_judgment" name="population_judgment" size=3>
+
+      <p id="error_num" style = "color:red; text-align: center;">Please provide a number between 0 and 100.</p>
+
+      </div>
+
+      <p>
     <p>
 
-<!--     <table id="slider_table" class="slider_table">
-      <tr><td class="left"><h3>no accent at all</h3></td><td colspan="2"><div id="accent_slider" class="slider"></div></td><td class="right" id="numObjects"><h3>heavy accent</h3></td></tr>
-      <tr></tr>
-      <tr><td class="left"><h3>easy to understand</h3></td><td colspan="2"><div id="understand_slider" class="slider"></div></td><td class="right" id="numObjects"><h3>difficult to understand</h3></td></tr>
-      <tr></tr>
-    </table> -->
-
-
-    <p><button id="done_percept" onclick="_s.button_percept()">Continue</button></p>
-    <p id="error_percept" style = "color:red">Please answer all questions before proceeding.</p>
+    <p>
+      
   </div>
+
+
+
+  <table style = "text-align:center;display:inline;table-layout: fixed;width: 800px;">
+    <tr><td><button id="button" onclick="_s.button()">Continue</button></td></tr>
+  </table>
+
+</center>
+
+  <p id="error_percept" style = "color:red">Please answer all questions before proceeding.</p>
+
 </div>
 
- <div class="slide" id="comp_check">
+  <div class="slide" id="comp_check">
     <br>
 
     <div id="perception"> 
@@ -143,9 +154,9 @@
       <hr>
 
       <i><div id = "question" style = "text-align:center;display:inline;">
-        What happened to Derek in the story?
-      </div></i><p><label><input type="radio"  name="attention" value="false"/>He fractured his leg at work.</label>
-      <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="attention" value="true"/>He contracted silicosis at work.</label></div><p>
+        What was the name of the town in the passage you just read?
+      </div></i><p><label><input type="radio"  name="attention" value="true"/>Deer Bluff.</label>
+      <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="attention" value="false"/>Caribou City.</label></div><p>
 
      
     <p>
@@ -153,17 +164,19 @@
     <p><button id="done_percept" onclick="_s.button_percept()">Continue</button></p>
     <p id="error_attn" style = "color:red" hidden>Please answer all questions before proceeding.</p>
   </div>
+</div>
+
+
 
     <div class="slide"  id="subj_info">
   <div class="long_form">
 <p><p>
 
+<!--   <div style = "padding-top:20px"><font style = "color:red"><strong> REMINDER: There are multiple versions of this study online; please do not participate again today. We won't compensate for multiple participation.</strong></font></div> <p> -->
 
-<!-- <div style = "padding-top:20px"><font style = "color:red"><strong> REMINDER: There are multiple versions of this study online; please do not participate again today. We won't compensate for multiple participation.</strong></font></div> <p>
- -->
     <div class="subj_info_title">Additional information</div>
 
-     <!--  <label for="participant_id"><u><b>Please provide your Stanford ID below (required):</b></u></label><br>
+<!--       <label for="participant_id"><u><b>Please provide your MTurk ID below (required):</b></u></label><br>
       <input type="text" id="participant_id" name="participant_id">
       <p hidden id="error_emptyid" style = "color:red"><b>You must provide your ID before continuing.</b></p><p> -->
 
@@ -194,44 +207,6 @@
 
     <p>Age: <input type="text" id="age"/></p>
 
-<!--     <div id="checkboxes">
-    <p>What is your Race/Ethnicity? Select all that apply:</p>
-    <ul style="list-style-type:none;" style="display: inline-block;" align="center">  
-      <li><label><input name="raceX" type="checkbox" id="Asian"  
-      value="Asian"/>Asian</label></li>
-      <li><label><input name="raceX" type="checkbox" id="AA" value="AA"/> 
-      Black or African American</label></li>
-      <li><label><input name="raceX" type="checkbox" id="Latino" value="Latino"/>
-      Hispanic or Latino</label></li>
-      <li><label><input name="raceX" type="checkbox" id="PI" value="PI"/>
-      Native Hawaiian or Other Pacific Islander </label></li>
-      <li><label><input name="raceX" type="checkbox" id="White" value="White"/>
-      White</label></li>
-    </ul>
-    </div> -->
-
-    <p>Level Of Education:
-    <select id="education">
-      <label><option value="-1"/></label>
-      <label><option value="0"/>Some High School</label>
-      <label><option value="1"/>Graduated High School</label>
-      <label><option value="2"/>Some College</label>
-      <label><option value="3"/>Graduated College</label>
-      <label><option value="4"/>Hold a higher degree</label>
-    </select>
-    </p>
-<!-- 
-    <p>Which of the following options do you feel your political beliefs most closely align with?</p>
-    <select id="affiliation">
-    <label><option value="-1"/></label>
-    <label><option value="0"/>Liberal Democrat (most liberal)</label>
-    <label><option value="1"/>Democratic-leaning Independent</label>
-    <label><option value="2"/>Moderate Democrat</label>
-    <label><option value="3"/>Independent (most neutral)</label>
-    <label><option value="4"/>Moderate Republican</label>
-    <label><option value="5"/>Republican-leaning Independent</label>
-    <label><option value="6"/>Conservative Republican (most conservative)</label>
-    <select> -->
     <p>Did you enjoy the experiment?</p>
     <select id="enjoyment">
     <label><option value="-1"></option></label>
@@ -249,8 +224,8 @@
 
   <div id="thanks" class="slide js" >
     <p  class="big">Thanks for your time!</p>
-<!--     <font style = "color:red"><strong> REMINDER: There are multiple versions of this study online; please do not participate again today. </strong></font> <p>
- -->    Please do not close this window...
+<!--     <font style = "color:red"><strong> REMINDER: There are multiple versions of this study online; please do not participate again today. </strong></font> <p> -->
+    Please do not close this window...
   </div>
   
   <div class="progress">
