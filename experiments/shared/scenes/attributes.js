@@ -40,7 +40,10 @@ var sceneAttributes = [{
 	"leftEnd" : "Highly unlikely.", "rightEnd" : "Highly likely."},
 
 	{"id" : "inference", "text" : "If your average English speaker said to you, \"I own a vehicle,\" how likely would you be to infer that they own an object similar to this?" ,
-	"leftEnd" : "Highly unlikely.", "rightEnd" : "Highly likely."}
+	"leftEnd" : "Highly unlikely.", "rightEnd" : "Highly likely."},
+
+	{"id" : "plausibility", "text" : "How plausible is it that one could find this object in a town square?" ,
+	"leftEnd" : "Highly implausible.", "rightEnd" : "Highly plausible."}
 	]
 	
 }]
