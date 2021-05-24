@@ -5,7 +5,7 @@ var sceneAttributes = [{
 	"rule" : "No vehicles in the town square.",
 
 	"objects" : [
-		"trafficcone", "speaker", "skateboard", "rollerskates", "pogostick", "pedalpub", "motorcycle", "forklift", "fireworks", "car", "bonfire", "bike"
+		"trafficcone", "speaker", "skateboard", "scooter", "pogostick", "pedalpub", "motorcycle", "forklift", "fireworks", "car", "meatsmoker", "bike"
 	],
 
 	"goals" : [
@@ -42,8 +42,7 @@ var sceneAttributes = [{
 	{"id" : "inference", "text" : "If your average English speaker said to you, \"I own a vehicle,\" how likely would you be to infer that they own an object similar to this?" ,
 	"leftEnd" : "Highly unlikely.", "rightEnd" : "Highly likely."},
 
-	{"id" : "plausibility", "text" : "How plausible is it that one could find this object in a town square?" ,
-	"leftEnd" : "Highly implausible.", "rightEnd" : "Highly plausible."}
+	{"id" : "plausibility", "text" : "Is it physically possible for someone to take this object into a town square?"}
 	]
 	
 }]
