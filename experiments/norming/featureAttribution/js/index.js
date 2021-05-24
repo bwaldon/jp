@@ -1,5 +1,25 @@
 //https://www.ncbi.nlm.nih.gov/pmc/articles/doi/10.3389/fpsyg.2014.00399/full// Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
+
+var instructionSlides = {
+
+  "plausibility": {
+    "detail" : "You'll be asked about the physical possibility of people interacting with objects in certain locations.",
+    'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
+    Use intermediate points to indicate uncertainty.",
+    'leftend' : 'No',
+    'rightend' : 'Yes',
+    "exampleQ1" : "Is it physically possible for someone to take this object into a library?",
+    "exampleImage1" : "book.jpg",
+    "example1Error" : "Are you sure? In fact, one can often find books inside libraries.",
+    "exampleQ2" : "Is it physically possible for someone to take this object into a bus?",
+    "exampleImage2" : "bonfire.jpg",
+    "example2Error" : "Are you sure? It seems as though it would be rather difficult (if not impossible) to carry a bonfire into a bus."
+
+  }
+
+}
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -86,12 +106,112 @@ function getArticleItem(item_id) {
      }
   });
 
+  slides.getready = slide({
+     name : "getready",
+     button : function() {
+      exp.go(); 
+    }
+  });
+
   slides.instructions = slide({
     name : "instructions",
+    start : function() {
+      $("#detail").html(instructionSlides[exp.condition]["detail"]);
+      $("#exampleQ1").html(instructionSlides[exp.condition]["exampleQ1"]);
+      $("#exampleImage1").html("<img width = '225px' src = 'shared/images/" + instructionSlides[exp.condition]["exampleImage1"] + "'><br>")
+    },
     button : function() {
       exp.go(); 
     }
   });
+
+  // SAMPLE TRIALS
+
+  slides.sampletrial = slide({
+    name : "objecttrial",
+    present : ['example1','example2'],
+    start : function() {
+       $(".err").hide();
+    },
+    
+    present_handle : function(stim) {
+
+    console.log("new trial started");
+    this.trial_start = Date.now();
+    $(".err").hide();
+
+    this.init_sliders();
+    exp.sliderPost = null;
+  
+    this.stim = stim;
+    console.log(this.stim);
+
+    let contextsentence;
+    let objimagehtml;
+    let header;
+    var giveItATry = instructionSlides[exp.condition]["giveItATry"]
+    var leftend = instructionSlides[exp.condition]["leftend"]
+    var rightend = instructionSlides[exp.condition]["rightend"]
+
+    if(stim == 'example1') {
+      contextsentence = instructionSlides[exp.condition]["exampleQ1"];
+      objimagehtml = "<img width = '225px' src = 'shared/images/" + instructionSlides[exp.condition]["exampleImage1"] + "'>";
+      header = "Example 1";
+    } else if(stim == 'example2') {
+      contextsentence = instructionSlides[exp.condition]["exampleQ2"];
+      objimagehtml = "<img width = '225px' src = 'shared/images/" + instructionSlides[exp.condition]["exampleImage2"] + "'>";
+      header = "Example 2";
+    }
+
+    $("#header").html(header)
+    $("#giveItATry").html(giveItATry);
+    $("#contextsentence").html(contextsentence);
+    $("#objectimage").html(objimagehtml);
+    $("#leftend").html(leftend);
+    $("#rightend").html(rightend);
+  },
+
+  button : function() {
+    console.log("button was pressed");
+    exp.errors = [];
+    if (exp.sliderPost == null) {
+      console.log("sliders not moved");
+      $("#err").html("Please answer before clicking 'Continue.'");
+     } else if (this.stim == 'example1' & exp.sliderPost <= 0.5) {
+      $("#err").html(instructionSlides[exp.condition]["example1Error"]);
+      exp.errors.push('example1')
+     } else if (this.stim == 'example2' & exp.sliderPost >= 0.5) {
+      $("#err").html(instructionSlides[exp.condition]["example2Error"]);
+      exp.errors.push('example2')
+     } else if (exp.sliderPost != null) {   
+      console.log("slider1: " + exp.sliderPost);
+      $("#err").html("");
+      this.log_responses();
+      _stream.apply(this); //use exp.go() if and only if there is no "present" data.        
+    }
+    console.log("slider1: " + exp.sliderPost);
+    },
+
+    init_sliders : function() {
+      utils.make_slider("#single_slider", function(event, ui) {
+        exp.sliderPost = ui.value;
+      });
+
+    },
+
+    log_responses : function() {
+        exp.data_trials.push({
+          "slide_number_in_experiment" : exp.phase,
+          "utterance": this.stim.item,
+          "object": this.stim.label,
+          "rt" : Date.now() - _s.trial_start,
+          "response" : [exp.sliderPost],
+          "errors" : exp.errors
+        });
+    }
+  });
+
+  // MAIN TRIALS
 
   slides.objecttrial = slide({
     name : "objecttrial",
@@ -99,30 +219,27 @@ function getArticleItem(item_id) {
     start : function() {
 	     $(".err").hide();
     },
-      present_handle : function(stim) {
+    
+    present_handle : function(stim) {
 
-      console.log("new trial started");
-    	this.trial_start = Date.now();
-      $(".err").hide();
+    console.log("new trial started");
+    this.trial_start = Date.now();
+    $(".err").hide();
 
-      this.init_sliders();
-      exp.sliderPost = null;
+    this.init_sliders();
+    exp.sliderPost = null;
   
-	   //$("#objectlabel").val("");	
 	  this.stim = stim;
-    // stim.item = _.shuffle(stim.item);
 	  console.log(this.stim);
-   //  console.log(stim.item);
-   //  console.log(stim.label);
     var contextsentence = stim.prompt.text;
-	//var contextsentence = "How typical is this for "+stim.basiclevel+"?";
-	//var objimagehtml = '<img src="images/'+stim.basiclevel+'/'+stim.item+'.jpg" style="height:190px;">';
     var objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
 
-	$("#contextsentence").html(contextsentence);
-	$("#objectimage").html(objimagehtml);
-  $("#leftend").html(stim.prompt.leftEnd);
-  $("#rightend").html(stim.prompt.rightEnd);
+    $("#header").html("")
+    $("#giveItATry").html("")
+    $("#contextsentence").html(contextsentence);
+    $("#objectimage").html(objimagehtml);
+    $("#leftend").html(instructionSlides[exp.condition].leftend);
+    $("#rightend").html(instructionSlides[exp.condition].rightend);
 	},
 
 	button : function() {
@@ -130,12 +247,12 @@ function getArticleItem(item_id) {
 
     if (exp.sliderPost == null) {
       console.log("one of the sliders is not moved")
-      console.log("slider1: " + exp.sliderPost + " ,slider2: " + exp.sliderPost2)
-      $(".err").show();
+      console.log("slider1: " + exp.sliderPost)
+      $("#err").html("Please answer before clicking 'Continue.'");
      } else if (exp.sliderPost != null) {   
       console.log("sliders moved");
       console.log("slider1: " + exp.sliderPost);
-      $(".err").hide();
+      $("#err").html("");
       this.log_responses();
       _stream.apply(this); //use exp.go() if and only if there is no "present" data.        
     }
@@ -145,7 +262,6 @@ function getArticleItem(item_id) {
     init_sliders : function() {
       utils.make_slider("#single_slider", function(event, ui) {
         exp.sliderPost = ui.value;
-        // $("#number_guess").html(Math.round(ui.value*N));
       });
 
     },
@@ -199,13 +315,15 @@ function getArticleItem(item_id) {
 /// init ///
 function init() {
 
-  // console.log(sceneAttributes)
+  exp.condition = location.search.split('type=')[1]
+  //console.log(exp.condition)
+  //console.log(instructionSlides[exp.condition]['detail'])
 
-  function generateStims(scene) {
+  function generateStims(scene,condition) {
 
     var sceneObjectsAndPrompts = sceneAttributes.filter(e => scene === e.name)[0]
     var objects = sceneObjectsAndPrompts.objects
-    var prompts = sceneObjectsAndPrompts.normingPrompts
+    var prompts = sceneObjectsAndPrompts.normingPrompts.filter(e => condition === e.id)
 
     var objects = _.shuffle(objects)
     var sceneStims = [];
@@ -219,14 +337,14 @@ function init() {
 
   var stims = [];
   var scenes = ["vehicles"]
-  scenes.map(scene => stims.push(generateStims(scene)))
+  scenes.map(scene => stims.push(generateStims(scene,exp.condition)))
 
   exp.all_stims = _.shuffle(stims.flat());
   console.log(exp.all_stims)
 
   exp.trials = [];
   exp.catch_trials = [];
-  exp.condition = {}; //can randomize between subject conditions here
+  // exp.condition = {}; //can randomize between subject conditions here
   exp.system = {
       Browser : BrowserDetect.browser,
       OS : BrowserDetect.OS,
@@ -236,13 +354,13 @@ function init() {
       screenUW: exp.width
     };
   //blocks of the experiment:
-  exp.structure=["bot","i0","objecttrial", 'subj_info', 'thanks'];
-  //exp.structure=["objecttrial", 'subj_info', 'thanks'];
+  exp.structure=["bot","i0","instructions","sampletrial","getready","objecttrial", 'subj_info', 'thanks'];
   // 
-  
   exp.data_trials = [];
   //make corresponding slides:
   exp.slides = make_slides(exp);
+
+  // MANUALLY CHANGE THE PROGRESS BAR
 
   exp.nQs = utils.get_exp_length(); //this does not work if there are stacks of stims (but does work for an experiment with this structure)
                     //relies on structure and slides being defined
