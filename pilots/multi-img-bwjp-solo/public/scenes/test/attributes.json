@@ -1,0 +1,13 @@
+{
+	"rule" : "No X in the Y.",
+	"objects" : [
+		"img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9", "img10", "img11", "img12"
+	],
+	"goals" : [
+		{"id": "goal1", "text" : "Goal 1 text"},
+		{"id": "goal2", "text" : "Goal 2 text"},
+		{"id": "goal3", "text" : "Goal 3 text"},
+		{"id": "none", "text" : "Goal neutral text"}
+	]
+}
+

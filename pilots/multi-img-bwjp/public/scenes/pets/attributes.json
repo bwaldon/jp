@@ -1,0 +1,18 @@
+{
+	"rule" : "No pets in the bookstore.",
+	"objects" : [
+		"snake", "scorpion", "pollen", "pitbull", "hairlesscat", "greatdane", "goldfish", "gascan", "chinchilla", "chihuahua", 
+		"boombox", "backpack"
+	],
+	"goals" : [
+		{"id": "pollution", "text" : "A local bookstore is concerned for patrons that have airborne allergies.",
+		"continuation" : "Because of this, the owners have posted a new rule:"},
+		{"id": "noise", "text" : "A local bookstore is concerned that there is too much ambient noise inside the store.",
+		"continuation" : "Because of this, the owners have posted a new rule:"},
+		{"id": "safety", "text" : "A local bookstore is concerned that the store is unsafe for patrons.",
+		"continuation" : "Because of this, the owners have posted a new rule:"},
+		{"id": "none", "text" : "", 
+		"continuation" : "The owners of a local bookstore have posted a new rule:"}
+	]
+}
+
