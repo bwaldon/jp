@@ -112,8 +112,8 @@ turk = turk || {};
       }
     }
 
-    // Change to if (true) to get local view
-    if (false) {
+    // If there's no turk info
+    if (!assignmentId || !turkSubmitTo) {
       // Emit the debug output and stop
       var div = document.createElement('div');
       div.style.fontFamily = '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", sans-serif';
@@ -124,13 +124,12 @@ turk = turk || {};
       div.innerHTML = "<p><b>Debug mode</b></p>Here is the data that would have been submitted to Turk: <ul>" + htmlify(rawData) + "</ul>"
       document.body.appendChild(div);
       return;
-    } else {
-      form.action = "collectdata.php"
-      form.method = "post";
-      form.submit();
     }
 
-   
+    // Otherwise, submit the form
+    form.action = turk.turkSubmitTo + "/mturk/externalSubmit";
+    form.method = "POST";
+    form.submit();
   }
   
   // simulate $(document).ready() to show the preview warning
