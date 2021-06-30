@@ -39,10 +39,10 @@ var promptData = {
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Highly implausible.',
     'rightend' : 'Highly plausible.',
-    "exampleQ1" : "<i>How plausible do you think it is that the following rule would apply <u> in a library</u>?</i> <br> <b>No smoking in the library.</b>",
+    "exampleQ1" : "<i>How plausible do you think it is that the following rule would apply <u> in a library</u>?</i> <br><br> <b>No smoking in the library.</b>",
     "exampleImage1" : "",
     "example1Error" : "Are you sure? This seems like a pretty common rule that one might encounter in a library.",
-    "exampleQ2" : "<i>How plausible do you think it is that the following rule would apply <u> on a commercial airplane</u>?</i> <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
+    "exampleQ2" : "<i>How plausible do you think it is that the following rule would apply <u> on a commercial airplane</u>?</i> <br><br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
     "exampleImage2" : "",
     "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers.",
     "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 3 minutes to complete. Please pay attention, and thanks for participating!"
@@ -232,7 +232,6 @@ function getArticleItem(item_id) {
 
   button : function() {
     console.log("button was pressed");
-    exp.errors = [];
     if (exp.sliderPost == null) {
       console.log("sliders not moved");
       $("#err").html("Please answer before clicking 'Continue.'");
@@ -260,6 +259,7 @@ function getArticleItem(item_id) {
 
     log_responses : function() {
         exp.data_trials.push({
+          "isExample" : "true",
           "slide_number_in_experiment" : exp.phase,
           "utterance": this.stim.item,
           "object": this.stim.label,
@@ -301,20 +301,19 @@ function getArticleItem(item_id) {
       objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
 
     } else if(exp.condition == "featureAttribution") {
-
       which_characteristic = Math.floor(Math.random() * 3) + 1
       if(which_characteristic == 1) {
-        characteristic = stim.characteristic1
-        characteristic_id = stim.goal1_id
-        goal = "goal1"
+        this.stim.characteristic = stim.characteristic1
+        this.stim.characteristic_id = stim.goal1_id
+        this.stim.goal = "goal1"
       } else if(which_characteristic == 2) {
-        characteristic = stim.characteristic2
-        characteristic_id = stim.goal2_id
-        goal = "goal2"
+        this.stim.characteristic = stim.characteristic2
+        this.stim.characteristic_id = stim.goal2_id
+        this.stim.goal = "goal2"
       } else if(which_characteristic == 3) {
-        characteristic = stim.characteristic3
-        characteristic_id = stim.goal3_id
-        goal = "goal3"
+        this.stim.characteristic = stim.characteristic3
+        this.stim.characteristic_id = stim.goal3_id
+        this.stim.goal = "goal3"
       }
       console.log(goal)
       contextsentence = "Does this object exhibit the following quality? <br><br> <b>" + characteristic + "</b>"
@@ -322,7 +321,6 @@ function getArticleItem(item_id) {
 
     } else if(exp.condition == "rulePlausibility") {
       contextsentence = "<br><i> How plausible do you think it is that the following rule would apply <u>" + stim.pp + "</u>?</i> <br><br> <b>" + stim.ruleRendered + "</b>"
-
     }
 
 
@@ -360,9 +358,14 @@ function getArticleItem(item_id) {
 
     log_responses : function() {
         exp.data_trials.push({
+          "isExample" : "false",
           "slide_number_in_experiment" : exp.phase,
+          "goal_number" : this.stim.goal,
+          "goal_id" : this.stim.characteristic_id,
+          "condition" : this.stim.condition,
+          "ruleRendered" : this.stim.ruleRendered,
           "utterance": this.stim.item,
-          "object": this.stim.label,
+          "object": this.stim.object,
           "scene" : this.stim.scene,
           "rt" : Date.now() - _s.trial_start,
           "response" : [exp.sliderPost]
@@ -383,7 +386,8 @@ function getArticleItem(item_id) {
         education : $("#education").val(),
         comments : $("#comments").val(),
         problems: $("#problems").val(),
-        fairprice: $("#fairprice").val()
+        fairprice: $("#fairprice").val(),
+        "errors" : exp.errors,
       };
       exp.go(); //use exp.go() if and only if there is no "present" data.
     }
@@ -410,6 +414,8 @@ function getArticleItem(item_id) {
 /// init ///
 function init() {
 
+  exp.errors = [];
+
   exp.condition = location.search.split('type=')[1]
 
   var trialArray = [];
@@ -434,6 +440,7 @@ function init() {
       } else if (cond == "distractor") { 
         trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
       }
+      trialAttributes['condition'] = cond;
       trialArray.push(trialAttributes);
     }
   }
