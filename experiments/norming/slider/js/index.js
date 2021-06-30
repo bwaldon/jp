@@ -362,7 +362,7 @@ function getArticleItem(item_id) {
           "slide_number_in_experiment" : exp.phase,
           "goal_number" : this.stim.goal,
           "goal_id" : this.stim.characteristic_id,
-          "ruleType" : this.stim.condition,
+          "ruleType" : this.stim.ruleType,
           "ruleRendered" : this.stim.ruleRendered,
           "utterance": this.stim.item,
           "object": this.stim.object,
