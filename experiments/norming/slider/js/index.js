@@ -362,7 +362,7 @@ function getArticleItem(item_id) {
           "slide_number_in_experiment" : exp.phase,
           "goal_number" : this.stim.goal,
           "goal_id" : this.stim.characteristic_id,
-          "condition" : this.stim.condition,
+          "ruleType" : this.stim.condition,
           "ruleRendered" : this.stim.ruleRendered,
           "utterance": this.stim.item,
           "object": this.stim.object,
@@ -441,7 +441,7 @@ function init() {
       } else if (cond == "distractor") { 
         trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
       }
-      trialAttributes['condition'] = cond;
+      trialAttributes['ruleType'] = cond;
       trialArray.push(trialAttributes);
     }
   }
