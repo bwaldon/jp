@@ -95,14 +95,7 @@ function make_slides(f) {
       $("#answer").val("");
 
       this.stim = stim;
-      
-      // if (stim.trial_type == "adjective_ordering") {
-      //   var list =  _.shuffle([1,2,3,4]);
-      //   x = list.pop(); // 1,2,3,4,
-      //   stim.label = stim[`img${x}`];
-      // }
-
-	    // console.log(this.stim);
+    
 	    var contextsentence = "What is this object?" ;
       var objimagehtml = '<img src="../../shared/scenes/'+stim.scene+'/images/'+stim.object+'.jpg" style="height:230px;">';
     
@@ -133,8 +126,7 @@ function make_slides(f) {
     log_responses : function() {
         exp.data_trials.push({
           "slide_number_in_experiment" : exp.phase,
-          "trial_type": this.stim.trial_type,
-          "label": this.stim.label,
+          "scene" : this.stim.scene,
           "object": this.stim.object,
           "rt" : Date.now() - _s.trial_start,
           "response" : $("#answer").val()

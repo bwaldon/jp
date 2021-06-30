@@ -353,6 +353,7 @@ function getArticleItem(item_id) {
           "slide_number_in_experiment" : exp.phase,
           "utterance": this.stim.item,
           "object": this.stim.label,
+          "scene" : this.stim.scene,
           "rt" : Date.now() - _s.trial_start,
           "response" : [exp.sliderPost]
         });
