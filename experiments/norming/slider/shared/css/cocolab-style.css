@@ -93,20 +93,6 @@ textarea {
 	float: right;
 }
 
-.thin {
-	height: 50px;
-}
-
-.top {
-	top: 0%;
-	position: relative;
-}
-.bottom {
-	top: 100%;
-	position: relative;
-	transform: translateY(-200%);
-}
-
 .slider_target {
 	text-align: right;
 }
@@ -126,28 +112,14 @@ textarea {
 	margin: 10px;
 }
 
-.vertical_slider {
-	width: 10px;
-	height: 300px;
-	margin: 10px auto;
-}
-
-#slider_endpoint_labels {
-	height: 300px;
-}
-
-.bin_label{
-	text-align: center;
-}
-
 /* Progress Bar */
 .progress{
-  position: absolute;
-  right: 15%;
-  top: 10px;
+  top: 0px;
+  right: 280px;
+  position: relative;
 }
 .progress span{
-  position:relative;
+  position: relative;
   top: -6px;
 }
 

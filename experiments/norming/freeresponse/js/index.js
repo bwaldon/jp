@@ -190,21 +190,6 @@ function init() {
 
   console.log("length: "+ exp.stims.length);
 
-  function preloadImages(){
-    for (pos in exp.stims){
-      if (exp.stims[pos].trial_type == "overinformativeness") {
-        (new Image()).src = "images/" + exp.stims[pos].label + ".png";
-      } else if (exp.stims[pos].trial_type == "adjective_ordering") {
-        (new Image()).src = "images/" + exp.stims[pos].img1 + ".png";
-        (new Image()).src = "images/" + exp.stims[pos].img2 + ".png";
-        (new Image()).src = "images/" + exp.stims[pos].img3 + ".png";
-        (new Image()).src = "images/" + exp.stims[pos].img4 + ".png";
-      }
-    console.log("loaded all the images");
-    };
-  };
-  preloadImages();
-
   exp.trials = [];
   exp.catch_trials = [];
   exp.condition = {}; //can randomize between subject conditions here

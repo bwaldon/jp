@@ -4,7 +4,7 @@
 var promptData = {
 
   "typicality": {
-    "detail" : "You'll see images of objects and determine whether or not particular words can be used to name the object.",
+    "detail" : "In this experiment, you'll see images of objects and determine whether or not particular words can be used to name the object.",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Definitely not.',
@@ -14,11 +14,12 @@ var promptData = {
     "example1Error" : "Are you sure? This seems like a pretty uncontroversial example of a book.",
     "exampleQ2" : "Is this object a water bottle?",
     "exampleImage2" : "bonfire.jpg",
-    "example2Error" : "Are you sure? This doesn't look like any water bottle we've seen before."
+    "example2Error" : "Are you sure? This doesn't look like any water bottle we've seen before.",
+    "estimatedLength" : 10
   },
 
   "featureAttribution": {
-    "detail" : "You'll see images of objects and determine whether or not the objects exhibit particular qualities.",
+    "detail" : "In this experiment, you'll see images of objects and determine whether or not the objects exhibit particular qualities.",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Definitely not.',
@@ -28,35 +29,38 @@ var promptData = {
     "example1Error" : "Are you sure? This seems like a pretty uncontroversial example of something that one can read.",
     "exampleQ2" : "Does this object exhibit the following quality? <br> <b>Consumable as food.</b>",
     "exampleImage2" : "bonfire.jpg",
-    "example2Error" : "Are you sure? We've never heard of anyone eating a bonfire before."
+    "example2Error" : "Are you sure? We've never heard of anyone eating a bonfire before.",
+    "estimatedLength" : 10
   },
 
   "rulePlausibility": {
-    "detail" : "You'll read hypothetical rules and determine whether or not the rules are plausible.",
+    "detail" : "In this experiment, you'll read hypothetical rules and determine whether or not the rules are plausible.",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Highly implausible.',
     'rightend' : 'Highly plausible.',
-    "exampleQ1" : "How plausible do you think it is that the following rule would apply in a library? <br> <b>No smoking in the library.</b>",
+    "exampleQ1" : "<i>How plausible do you think it is that the following rule would apply <u> in a library</u>?</i> <br> <b>No smoking in the library.</b>",
     "exampleImage1" : "",
     "example1Error" : "Are you sure? This seems like a pretty common rule that one might encounter in a library.",
-    "exampleQ2" : "How plausible do you think it is that the following rule would apply on a commercial airplane? <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
+    "exampleQ2" : "<i>How plausible do you think it is that the following rule would apply <u> on a commercial airplane</u>?</i> <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
     "exampleImage2" : "",
-    "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers."
+    "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers.",
+    "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 3 minutes to complete. Please pay attention, and thanks for participating!"
   }, 
 
   "goalPlausibility": {
-    "detail" : "You'll read about the goals of hypothetical people and determine whether or not issuing particular rules are plausible means to achieve those goals.",
+    "detail" : "In this experiment, you'll read about the goals of hypothetical people and determine whether or not issuing particular rules are plausible means to achieve those goals.",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Highly implausible.',
     'rightend' : 'Highly plausible.',
-    "exampleQ1" : "How plausible do you think it is that the following rule would apply in a library? <br> <b>No smoking in the library.</b>",
+    "exampleQ1" : "<i>How plausible do you think it is that the following rule would apply <u> in a library</u>?</i> <br> <b>No smoking in the library.</b>",
     "exampleImage1" : "",
     "example1Error" : "Are you sure? This seems like a pretty common rule that one might encounter in a library.",
-    "exampleQ2" : "How plausible do you think it is that the following rule would apply on a commercial airplane? <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
+    "exampleQ2" : "<i>How plausible do you think it is that the following rule would apply <u> on a commercial airplane?</u></i> <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
     "exampleImage2" : "",
-    "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers."
+    "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers.",
+    "estimatedLength" : 2
   }, 
 
 }
@@ -140,11 +144,15 @@ function getArticleItem(item_id) {
     },
   });
 
-  slides.i0 = slide({
-     name : "i0",
+  slides.consent = slide({
+     name : "consent",
      start: function() {
+      $("#briefDetail").html(promptData[exp.condition]["briefDetail"]);
       exp.startT = Date.now();
-     }
+     },
+     button : function() {
+      exp.go(); 
+      }
   });
 
   slides.getready = slide({
@@ -184,6 +192,7 @@ function getArticleItem(item_id) {
     console.log("new trial started");
     this.trial_start = Date.now();
     $(".err").hide();
+    $(".progress").hide();
 
     this.init_sliders();
     exp.sliderPost = null;
@@ -200,14 +209,14 @@ function getArticleItem(item_id) {
 
     if(stim == 'example1') {
       contextsentence = promptData[exp.condition]["exampleQ1"];
-      header = "Example 1"; {
+      header = "Example 1 of 2"; {
         if(["featureAttribution", "typicality"].includes(exp.condition)) {
           objimagehtml = "<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "'>";
         }
       }
     } else if(stim == 'example2') {
       contextsentence = promptData[exp.condition]["exampleQ2"];
-      header = "Example 2";
+      header = "Example 2 of 2";
       if(["featureAttribution", "typicality"].includes(exp.condition)) {
           objimagehtml = "<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage2"] + "'>";
         }
@@ -275,6 +284,7 @@ function getArticleItem(item_id) {
     console.log("new trial started");
     this.trial_start = Date.now();
     $(".err").hide();
+    $(".progress").show();
 
     this.init_sliders();
     exp.sliderPost = null;
@@ -311,7 +321,7 @@ function getArticleItem(item_id) {
       objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
 
     } else if(exp.condition == "rulePlausibility") {
-      contextsentence = "<br> How plausible do you think it is that the following rule would apply " + stim.pp + "? <br><br> <b>" + stim.ruleRendered + "</b>"
+      contextsentence = "<br><i> How plausible do you think it is that the following rule would apply <u>" + stim.pp + "</u>?</i> <br><br> <b>" + stim.ruleRendered + "</b>"
 
     }
 
@@ -372,6 +382,8 @@ function getArticleItem(item_id) {
         gender : $("#gender").val(),
         education : $("#education").val(),
         comments : $("#comments").val(),
+        problems: $("#problems").val(),
+        fairprice: $("#fairprice").val()
       };
       exp.go(); //use exp.go() if and only if there is no "present" data.
     }
@@ -415,15 +427,14 @@ function init() {
     }
   } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
     for(s of scenes) {
-      ["main","distractor"].map(function(cond) {
-        let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
-        if(cond == "main") {
-          trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np'])
-        } else if (cond == "distractor") { 
-          trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
-        }
-        trialArray.push(trialAttributes);
-      })
+      let cond = _.sample(["main","distractor"])
+      let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
+      if(cond == "main") {
+        trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np'])
+      } else if (cond == "distractor") { 
+        trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
+      }
+      trialArray.push(trialAttributes);
     }
   }
 
@@ -447,7 +458,7 @@ if(["featureAttribution", "typicality"].includes(exp.condition)) {
       screenUW: exp.width
     };
   //blocks of the experiment:
-  exp.structure=["bot","i0","instructions","sampletrial","getready","objecttrial", 'subj_info', 'thanks'];
+  exp.structure=["bot","consent","instructions","sampletrial","getready","objecttrial", 'subj_info', 'thanks'];
   // 
   exp.data_trials = [];
   //make corresponding slides:
