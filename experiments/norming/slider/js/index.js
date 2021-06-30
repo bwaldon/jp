@@ -416,7 +416,7 @@ function init() {
 
   exp.errors = [];
 
-  exp.condition = location.search.slice(1).split("&")[0].split("=")[1]
+  exp.condition = location.search.slice(1).split("?")[0].split("=")[1]
 
   var trialArray = [];
 
