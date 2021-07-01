@@ -60,7 +60,7 @@ var promptData = {
     "exampleQ2" : "<b>The executives of a large airline are worried about passengers getting injured during periods of extreme turbulence on flights. </b> <br> <br> <i> Because of this, the executives have issued the following rule:</i> <br> <br> <u>No newspapers are allowed on any flights.</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?",
     "exampleImage2" : "",
     "example2Error" : "Are you sure? This seems like a fairly odd rule to have issued, if passenger safety indeed were the executives' concern.",
-    "estimatedLength" : 2
+    "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 6 minutes to complete. Please pay attention, and thanks for participating!"
   }, 
 
 }
