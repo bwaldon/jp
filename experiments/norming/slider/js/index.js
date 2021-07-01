@@ -49,17 +49,17 @@ var promptData = {
   }, 
 
   "goalPlausibility": {
-    "detail" : "In this experiment, you'll read about the goals of hypothetical people and determine whether or not issuing particular rules are plausible means to achieve those goals.",
+    "detail" : "In this experiment, you'll read hypothetical scenarios in which rules are issued in light of particular motivations. You'll judge how plausible it is that <u>the rule</u> (shown underlined) could be motivated by <b>the reason</b> (shown in bold).",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Highly implausible.',
     'rightend' : 'Highly plausible.',
-    "exampleQ1" : "<i>How plausible do you think it is that the following rule would apply <u> in a library</u>?</i> <br> <b>No smoking in the library.</b>",
+    "exampleQ1" : "<b>The librarians in a public library are concerned about patrons breathing in secondhand smoke.</b> <br> <br> <i>Because of this, the librarians have issued the following rule:</i> <br> <br> <u>No smoking in the library.</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?",
     "exampleImage1" : "",
-    "example1Error" : "Are you sure? This seems like a pretty common rule that one might encounter in a library.",
-    "exampleQ2" : "<i>How plausible do you think it is that the following rule would apply <u> on a commercial airplane?</u></i> <br> <b>Passengers must bring a newspaper in order to board the plane.</b>",
+    "example1Error" : "Are you sure? Secondhand smoke seems like a pretty common reason to ban smoking from public places.",
+    "exampleQ2" : "<b>The executives of a large airline are worried about passengers getting injured during periods of extreme turbulence on flights. </b> <br> <br> <i> Because of this, the executives have issued the following rule:</i> <br> <br> <u>No newspapers are allowed on any flights.</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?",
     "exampleImage2" : "",
-    "example2Error" : "Are you sure? We find it pretty unlikely that an airline would impose this kind of requirement on passengers.",
+    "example2Error" : "Are you sure? This seems like a fairly odd rule to have issued, if passenger safety indeed were the executives' concern.",
     "estimatedLength" : 2
   }, 
 
@@ -165,12 +165,13 @@ function getArticleItem(item_id) {
   slides.instructions = slide({
     name : "instructions",
     start : function() {
+
       $("#detail").html(promptData[exp.condition]["detail"]);
       $("#exampleQ1").html(promptData[exp.condition]["exampleQ1"]);
       if(["featureAttribution", "typicality"].includes(exp.condition)) {
         $("#exampleImage1").html("<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "'><br>")
       } else {
-        $("#exampleImage1").html("<br>")
+        $("#exampleImage1").html("")
       }
     },
     button : function() {
@@ -300,28 +301,35 @@ function getArticleItem(item_id) {
       contextsentence =  "Is this object " + stim.np_typicalityQuestion + "?"
       objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
 
-    } else if(exp.condition == "featureAttribution") {
+    } else if(exp.condition == "featureAttribution" || exp.condition == "goalPlausibility") {
       which_characteristic = Math.floor(Math.random() * 3) + 1
       if(which_characteristic == 1) {
         this.stim.characteristic = stim.characteristic1
         this.stim.characteristic_id = stim.goal1_id
-        this.stim.goal = "goal1"
+        this.stim.goal_id = "goal1"
+        this.stim.goal = stim.goal1
       } else if(which_characteristic == 2) {
         this.stim.characteristic = stim.characteristic2
         this.stim.characteristic_id = stim.goal2_id
-        this.stim.goal = "goal2"
+        this.stim.goal_id = "goal2"
+        this.stim.goal = stim.goal2
       } else if(which_characteristic == 3) {
         this.stim.characteristic = stim.characteristic3
         this.stim.characteristic_id = stim.goal3_id
-        this.stim.goal = "goal3"
+        this.stim.goal_id = "goal3"
+        this.stim.goal = stim.goal3
       }
-      console.log(goal)
-      contextsentence = "Does this object exhibit the following quality? <br><br> <b>" + characteristic + "</b>"
-      objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
+      if(exp.condition == "goalPlausibility") {
+        contextsentence = "<b>" + this.stim.goal + "</b> <br> <br> <i>" + this.stim.goal_continuation + "</i> <br> <br> <u>" + this.stim.ruleRendered + "</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?"
+      } else {
+        contextsentence = "Does this object exhibit the following quality? <br><br> <b>" + characteristic + "</b>"
+        objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
+      }
 
     } else if(exp.condition == "rulePlausibility") {
-      contextsentence = "<br><i> How plausible do you think it is that the following rule would apply <u>" + stim.pp + "</u>?</i> <br><br> <b>" + stim.ruleRendered + "</b>"
-    }
+      contextsentence = "<i> How plausible do you think it is that the following rule would apply <u>" + stim.pp + "</u>?</i> <br><br> <b>" + stim.ruleRendered + "</b>"
+    
+    } 
 
 
     $("#header").html("")
@@ -415,49 +423,67 @@ function getArticleItem(item_id) {
 /// init ///
 function init() {
 
-  exp.errors = [];
+  $.when(
 
-  exp.condition = location.search.slice(1).split("?")[0].split("=")[1]
+    $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1OzEjOglpjCT4dDG9_Uk81m_GM-TRIPTrMN1DJ-JCoY8/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
 
-  var trialArray = [];
-
-  console.log(exp.condition)
-
-  if(["featureAttribution", "typicality"].includes(exp.condition)) {
-    for(s of scenes) {
-      console.log(s.objects)
-      s.objects.map(function(object) { 
-        let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
-        trialAttributes['object'] = object;
-        trialArray.push(trialAttributes);
-      })
+  ).done( function(json) {
+    function convertToObjects(headers, rows)
+    {
+      return rows.reduce((ctx, row) => {
+        ctx.objects.push(ctx.headers.reduce((item, header, index) => {
+          item[header] = row[index];
+          return item;
+        }, {}));
+        return ctx;
+      }, { objects: [], headers}).objects;
     }
-  } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
-    for(s of scenes) {
-      let cond = _.sample(["main","distractor"])
-      let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
-      if(cond == "main") {
-        trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np'])
-      } else if (cond == "distractor") { 
-        trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
+
+    var attributes = convertToObjects(json.values[0],json.values.slice(1))
+
+    exp.errors = [];
+    exp.condition = location.search.slice(1).split("?")[0].split("=")[1]
+
+    var trialArray = [];
+
+    if(["featureAttribution", "typicality"].includes(exp.condition)) {
+      for(s of scenes) {
+        console.log(s.objects)
+        s.objects.map(function(object) { 
+          let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
+          trialAttributes['object'] = object;
+          trialArray.push(trialAttributes);
+        })
       }
-      trialAttributes['ruleType'] = cond;
-      trialArray.push(trialAttributes);
+    } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
+      for(s of scenes) {
+        let cond = _.sample(["main","distractor"])
+        let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
+        if(cond == "main") {
+          trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np'])
+        } else if (cond == "distractor" && exp.condition == "rulePlausibility") { 
+          trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np_distractor'])
+        } else if (cond == "distractor" && exp.condition == "goalPlausibility") { 
+          trialAttributes['ruleRendered'] = trialAttributes['np_distractor2']
+        } 
+        trialAttributes['ruleType'] = cond;
+        trialArray.push(trialAttributes);
+      }
     }
-  }
 
-if(["featureAttribution", "typicality"].includes(exp.condition)) {
-  exp.all_stims = _.shuffle(trialArray.slice(1,91));
- } else {
-  exp.all_stims = _.shuffle(trialArray)
- }
- 
-  console.log(exp.all_stims)
+    if(["featureAttribution", "typicality"].includes(exp.condition)) {
+      exp.all_stims = _.shuffle(trialArray.slice(1,91));
+    } else {
+      exp.all_stims = _.shuffle(trialArray)
+    }
 
-  exp.trials = [];
-  exp.catch_trials = [];
-  // exp.condition = {}; //can randomize between subject conditions here
-  exp.system = {
+    // console.log(exp.all_stims)
+
+    exp.trials = [];
+    exp.catch_trials = [];
+
+    // exp.condition = {}; //can randomize between subject conditions here
+    exp.system = {
       Browser : BrowserDetect.browser,
       OS : BrowserDetect.OS,
       screenH: screen.height,
@@ -465,30 +491,33 @@ if(["featureAttribution", "typicality"].includes(exp.condition)) {
       screenW: screen.width,
       screenUW: exp.width
     };
-  //blocks of the experiment:
-  exp.structure=["bot","consent","instructions","sampletrial","getready","objecttrial", 'subj_info', 'thanks'];
-  // 
-  exp.data_trials = [];
-  //make corresponding slides:
-  exp.slides = make_slides(exp);
 
-  // MANUALLY CHANGE THE PROGRESS BAR
+    //blocks of the experiment:
+    exp.structure=["bot","consent","instructions","sampletrial","getready","objecttrial", 'subj_info', 'thanks'];
 
-  exp.nQs = utils.get_exp_length(); //this does not work if there are stacks of stims (but does work for an experiment with this structure)
+    exp.data_trials = [];
+
+    exp.slides = make_slides(exp);
+
+    exp.nQs = utils.get_exp_length(); //this does not work if there are stacks of stims (but does work for an experiment with this structure)
                     //relies on structure and slides being defined
-  $(".nQs").html(exp.nQs);
+    $(".nQs").html(exp.nQs);
 
-  $('.slide').hide(); //hide everything
+    $('.slide').hide(); //hide everything
 
-  //make sure turkers have accepted HIT (or you're not in mturk)
-  $("#start_button").click(function() {
-    if (turk.previewMode) {
-      $("#mustaccept").show();
-    } else {
-      $("#start_button").click(function() {$("#mustaccept").show();});
-      exp.go();
-    }
+    //make sure turkers have accepted HIT (or you're not in mturk)
+    $("#start_button").click(function() {
+      if (turk.previewMode) {
+        $("#mustaccept").show();
+     } else {
+        $("#start_button").click(function() {$("#mustaccept").show();});
+        exp.go();
+      }
+
   });
+  //show first slide
+    exp.go();
 
-  exp.go(); //show first slide
+  });
+     
 }

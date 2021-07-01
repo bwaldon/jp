@@ -36,8 +36,6 @@
     <!-- experiment file -->
     <script src="js/index.js"></script>
 
-    <!-- shared attributes file -->
-    <script src="../../shared/sceneAttributes.js"></script>
     <script src="../../shared/sceneObjects.js"></script>
 
     <script type="text/JavaScript">
@@ -81,11 +79,15 @@
     <h3>Instructions</h3>
 <!--       <p>In this experiment, you will see a series of images.<p>
  -->      <p id = 'detail'></p>
-      <p> For example, you might be asked: </p>
+      <p> For example: </p>
+    <div id="vignette" style = "text-align: justify; font-family: Arial, Helvetica, sans-serif;background-color: #faeeca;padding:5px;border: 5px solid gray;">
 
     <div id = 'exampleQ1'></div>
-
     <div id = 'exampleImage1'> </div>
+
+    </div>
+
+    <br>
 
     <center> <button onclick="_s.button()">Continue</button> </center>
   </div>
@@ -108,10 +110,14 @@
     </div>
     <h3 id = "header"></h3>
     <p id="giveItATry"> </p>
+
+    <div id="vignette" style = "text-align: justify; font-family: Arial, Helvetica, sans-serif;background-color: #faeeca;padding:5px;border: 5px solid gray;">
+    
     <div id="objectimage"></div>
+    <div id="contextsentence"> </div>
 
-    <p id="contextsentence"> </p>
-
+    </div>
+    <br>
     <table id="slider_table" class="slider_table">
       <tr><td class="left"><div id="leftend"></div></td><td class="right" id="numObjects"><div id="rightend"></div></td></tr>
       <tr><td colspan="2"><div id="single_slider" class="slider"></div></td></tr>
