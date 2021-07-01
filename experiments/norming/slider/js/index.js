@@ -368,7 +368,9 @@ function getArticleItem(item_id) {
         exp.data_trials.push({
           "isExample" : "false",
           "slide_number_in_experiment" : exp.phase,
-          "goal_number" : this.stim.goal,
+          // these could have been named more intuitively
+          "goal" : this.stim.goal,
+          "goal_number" : this.stim.goal_id,
           "goal_id" : this.stim.characteristic_id,
           "ruleType" : this.stim.ruleType,
           "ruleRendered" : this.stim.ruleRendered,
