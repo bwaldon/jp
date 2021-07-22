@@ -9,10 +9,10 @@ var promptData = {
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Definitely not.',
     'rightend' : 'Definitely yes.',
-    "exampleQ1" : "Is this object a book?",
+    "exampleQ1" : "<br><center> Is this object a book? </center>",
     "exampleImage1" : "book.jpg",
     "example1Error" : "Are you sure? This seems like a pretty uncontroversial example of a book.",
-    "exampleQ2" : "Is this object a water bottle?",
+    "exampleQ2" : "<center> Is this object a water bottle? </center>",
     "exampleImage2" : "bonfire.jpg",
     "example2Error" : "Are you sure? This doesn't look like any water bottle we've seen before.",
     "estimatedLength" : 10
@@ -49,15 +49,15 @@ var promptData = {
   }, 
 
   "goalPlausibility": {
-    "detail" : "In this experiment, you'll read hypothetical scenarios in which rules are issued in light of particular motivations. You'll judge how plausible it is that <u>the rule</u> (shown underlined) could be motivated by <b>the reason</b> (shown in bold).",
+    "detail" : "In this experiment, you'll read hypothetical scenarios in which rules are issued in light of particular motivations. You'll judge whether or not it made sense to issue <u>the rule</u> (shown underlined) given <b>the motivation</b> (shown in bold).",
     'giveItATry' : "Give it a try! Use the slider below to indicate your judgment. Use the endpoints of the slider to indicate maximal certainty of your answer. \
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Highly implausible.',
     'rightend' : 'Highly plausible.',
-    "exampleQ1" : "<b>The librarians in a public library are concerned about patrons breathing in secondhand smoke.</b> <br> <br> <i>Because of this, the librarians have issued the following rule:</i> <br> <br> <u>No smoking in the library.</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?",
+    "exampleQ1" : "<b>The librarians in a public library are concerned about patrons breathing in secondhand smoke.</b> <br> <br> How plausible is it that <b>the motivation</b> above could have given rise to <u>the rule</u> below? <br> <br> <u>No smoking in the library.</u> <br>",
     "exampleImage1" : "",
     "example1Error" : "Are you sure? Secondhand smoke seems like a pretty common reason to ban smoking from public places.",
-    "exampleQ2" : "<b>The executives of a large airline are worried about passengers getting injured during periods of extreme turbulence on flights. </b> <br> <br> <i> Because of this, the executives have issued the following rule:</i> <br> <br> <u>No newspapers are allowed on any flights.</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?",
+    "exampleQ2" : "<b>The executives of a large airline are worried about passengers getting injured during periods of extreme turbulence on flights. </b> <br> <br> How plausible is it that <b>the motivation</b> above could have given rise to <u>the rule</u> below? <br> <br> <u>No newspapers are allowed on any flights.</u> <br>",
     "exampleImage2" : "",
     "example2Error" : "Are you sure? This seems like a fairly odd rule to have issued, if passenger safety indeed were the executives' concern.",
     "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 6 minutes to complete. Please pay attention, and thanks for participating!"
@@ -169,7 +169,7 @@ function getArticleItem(item_id) {
       $("#detail").html(promptData[exp.condition]["detail"]);
       $("#exampleQ1").html(promptData[exp.condition]["exampleQ1"]);
       if(["featureAttribution", "typicality"].includes(exp.condition)) {
-        $("#exampleImage1").html("<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "'><br>")
+        $("#exampleImage1").html("<center><img src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "' style='height:225px;border:1px solid black'><br></center><br>")
       } else {
         $("#exampleImage1").html("")
       }
@@ -212,14 +212,14 @@ function getArticleItem(item_id) {
       contextsentence = promptData[exp.condition]["exampleQ1"];
       header = "Example 1 of 2"; {
         if(["featureAttribution", "typicality"].includes(exp.condition)) {
-          objimagehtml = "<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "'>";
+          objimagehtml = "<center><img src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "' style='height:225px;border:1px solid black'></center>";
         }
       }
     } else if(stim == 'example2') {
       contextsentence = promptData[exp.condition]["exampleQ2"];
       header = "Example 2 of 2";
       if(["featureAttribution", "typicality"].includes(exp.condition)) {
-          objimagehtml = "<img width = '225px' src = 'shared/images/" + promptData[exp.condition]["exampleImage2"] + "'>";
+          objimagehtml = "<center><img src = 'shared/images/" + promptData[exp.condition]["exampleImage2"] + "' style='height:225px;border:1px solid black'></center>";
         }
     }
 
@@ -298,8 +298,8 @@ function getArticleItem(item_id) {
 
     if(exp.condition == "typicality") {
 
-      contextsentence =  "Is this object " + stim.np_typicalityQuestion + "?"
-      objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
+      contextsentence =  "<br> <br> <center> Is this object " + stim.np_typicalityQuestion + "? </center>"
+      objimagehtml = '<center><img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:250px;border:1px solid black"></center>';
 
     } else if(exp.condition == "featureAttribution" || exp.condition == "goalPlausibility") {
       which_characteristic = Math.floor(Math.random() * 3) + 1
@@ -320,10 +320,10 @@ function getArticleItem(item_id) {
         this.stim.goal = stim.goal3
       }
       if(exp.condition == "goalPlausibility") {
-        contextsentence = "<b>" + this.stim.goal + "</b> <br> <br> <i>" + this.stim.goal_continuation + "</i> <br> <br> <u>" + this.stim.ruleRendered + "</u> <br> <br> How plausible do you think it is that <u>the rule</u> was motivated (at least in part) by <b>the reason</b> given above?"
+        contextsentence = "<b>" + this.stim.goal + "</b> <br> <br> How plausible is it that <b>the motivation</b> above could have given rise to <u>the rule</u> below? <br> <br> <u>" + this.stim.ruleRendered + "</u> <br>"
       } else {
         contextsentence = "Does this object exhibit the following quality? <br><br> <b>" + characteristic + "</b>"
-        objimagehtml = '<img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;">';
+        objimagehtml = '<center><img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;"></center>';
       }
 
     } else if(exp.condition == "rulePlausibility") {
@@ -458,8 +458,9 @@ function init() {
         })
       }
     } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
+      var condArray = _.shuffle(["main","main","main","main","main","main","distractor","distractor","distractor","distractor","distractor","distractor"])
       for(s of scenes) {
-        let cond = _.sample(["main","distractor"])
+        let cond = condArray.pop();
         let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
         if(cond == "main") {
           trialAttributes['ruleRendered'] = trialAttributes['rule'].replace('[NP]', trialAttributes['np'])
