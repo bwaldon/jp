@@ -60,7 +60,8 @@ var promptData = {
     "exampleQ2" : "<b>The executives of a large airline are worried about passengers getting injured during periods of extreme turbulence on flights. </b> <br> <br> How plausible is it that <b>the motivation</b> above could have given rise to <u>the rule</u> below? <br> <br> <u>No newspapers are allowed on any flights.</u> <br>",
     "exampleImage2" : "",
     "example2Error" : "Are you sure? This seems like a fairly odd rule to have issued, if passenger safety indeed were the executives' concern.",
-    "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 6 minutes to complete. Please pay attention, and thanks for participating!"
+    // EDITED TIME FOR THE SECOND ROUND OF NORMING
+    "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 2 minutes to complete. Please pay attention, and thanks for participating!"
   }, 
 
 }
@@ -427,7 +428,8 @@ function init() {
 
   $.when(
 
-    $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1OzEjOglpjCT4dDG9_Uk81m_GM-TRIPTrMN1DJ-JCoY8/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
+    // $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1OzEjOglpjCT4dDG9_Uk81m_GM-TRIPTrMN1DJ-JCoY8/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
+    $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1poLYv5YxvXTJO9GgrPNYzetf7BfUA2KXdfIYcqzxdrI/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
 
   ).done( function(json) {
     function convertToObjects(headers, rows)
@@ -440,6 +442,9 @@ function init() {
         return ctx;
       }, { objects: [], headers}).objects;
     }
+
+    // TURN OFF BELOW LINE FOR FULL-LIST NORMING:
+    scenes = scenes.filter(a => ["outsidebags","pets"].includes(a.scene))
 
     var attributes = convertToObjects(json.values[0],json.values.slice(1))
 
@@ -458,7 +463,9 @@ function init() {
         })
       }
     } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
-      var condArray = _.shuffle(["main","main","main","main","main","main","distractor","distractor","distractor","distractor","distractor","distractor"])
+      // EDITED FOR ROUND 2 NORMING
+      // var condArray = _.shuffle(["main","main","main","main","main","main","distractor","distractor","distractor","distractor","distractor","distractor"])
+      var condArray = _.shuffle(["main","distractor"])
       for(s of scenes) {
         let cond = condArray.pop();
         let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
