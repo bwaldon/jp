@@ -482,8 +482,7 @@ function init() {
     }
 
     if(["featureAttribution", "typicality"].includes(exp.condition)) {
-      // exp.all_stims = _.shuffle(trialArray.slice(1,91));
-      exp.all_stims = _.shuffle(trialArray.slice(0,72));
+      exp.all_stims = _.shuffle(trialArray).slice(0,72);
     } else {
       exp.all_stims = _.shuffle(trialArray)
     }
