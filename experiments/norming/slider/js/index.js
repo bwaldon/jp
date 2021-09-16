@@ -15,7 +15,7 @@ var promptData = {
     "exampleQ2" : "<center> Is this object a water bottle? </center>",
     "exampleImage2" : "bonfire.jpg",
     "example2Error" : "Are you sure? This doesn't look like any water bottle we've seen before.",
-    "estimatedLength" : 10
+    "briefDetail" : "In this study, you'll read short passages of text and provide your judgments about them. The study should take roughly 5 minutes to complete. Please pay attention, and thanks for participating!"
   },
 
   "featureAttribution": {
@@ -428,8 +428,8 @@ function init() {
 
   $.when(
 
-    // $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1OzEjOglpjCT4dDG9_Uk81m_GM-TRIPTrMN1DJ-JCoY8/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
-    $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1poLYv5YxvXTJO9GgrPNYzetf7BfUA2KXdfIYcqzxdrI/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
+    $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1OzEjOglpjCT4dDG9_Uk81m_GM-TRIPTrMN1DJ-JCoY8/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
+    //$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1poLYv5YxvXTJO9GgrPNYzetf7BfUA2KXdfIYcqzxdrI/values/Sheet1?key=AIzaSyBs7D7BF5KR0ei108MlHg92S7N22cxB9O8')
 
   ).done( function(json) {
     function convertToObjects(headers, rows)
@@ -444,7 +444,7 @@ function init() {
     }
 
     // TURN OFF BELOW LINE FOR FULL-LIST NORMING:
-    scenes = scenes.filter(a => ["outsidebags","pets"].includes(a.scene))
+    // scenes = scenes.filter(a => ["outsidebags","pets"].includes(a.scene))
 
     var attributes = convertToObjects(json.values[0],json.values.slice(1))
 
@@ -464,8 +464,8 @@ function init() {
       }
     } else if(["rulePlausibility","goalPlausibility"].includes(exp.condition)) {
       // EDITED FOR ROUND 2 NORMING
-      // var condArray = _.shuffle(["main","main","main","main","main","main","distractor","distractor","distractor","distractor","distractor","distractor"])
-      var condArray = _.shuffle(["main","distractor"])
+      var condArray = _.shuffle(["main","main","main","main","main","main","distractor","distractor","distractor","distractor","distractor","distractor"])
+      // var condArray = _.shuffle(["main","distractor"])
       for(s of scenes) {
         let cond = condArray.pop();
         let trialAttributes = Object.assign({}, attributes.filter(a => a.scene == s.scene)[0]);
@@ -482,7 +482,8 @@ function init() {
     }
 
     if(["featureAttribution", "typicality"].includes(exp.condition)) {
-      exp.all_stims = _.shuffle(trialArray.slice(1,91));
+      // exp.all_stims = _.shuffle(trialArray.slice(1,91));
+      exp.all_stims = _.shuffle(trialArray.slice(0,72));
     } else {
       exp.all_stims = _.shuffle(trialArray)
     }
