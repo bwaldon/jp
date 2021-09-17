@@ -24,13 +24,13 @@ var promptData = {
     Use intermediate points to indicate uncertainty.",
     'leftend' : 'Definitely not.',
     'rightend' : 'Definitely yes.',
-    "exampleQ1" : "Does this object exhibit the following quality? <br> <b>Able to be read.</b>",
+    "exampleQ1" : "<center>Does this object exhibit the following quality? <br> <b>Able to be read.</b></center>",
     "exampleImage1" : "book.jpg",
     "example1Error" : "Are you sure? This seems like a pretty uncontroversial example of something that one can read.",
-    "exampleQ2" : "Does this object exhibit the following quality? <br> <b>Consumable as food.</b>",
+    "exampleQ2" : "<center>Does this object exhibit the following quality? <br> <b>Consumable as food.</b></center>",
     "exampleImage2" : "bonfire.jpg",
     "example2Error" : "Are you sure? We've never heard of anyone eating a bonfire before.",
-    "estimatedLength" : 10
+    "briefDetail" : "In this study, you'll see images on the screen and provide judgments about those images. The study should take roughly 5 minutes to complete. Please pay attention, and thanks for participating!"
   },
 
   "rulePlausibility": {
@@ -214,6 +214,7 @@ function getArticleItem(item_id) {
       header = "Example 1 of 2"; {
         if(["featureAttribution", "typicality"].includes(exp.condition)) {
           objimagehtml = "<center><img src = 'shared/images/" + promptData[exp.condition]["exampleImage1"] + "' style='height:225px;border:1px solid black'></center>";
+          contextsentence = "<center><br>"+contextsentence+"</center>";
         }
       }
     } else if(stim == 'example2') {
@@ -221,6 +222,7 @@ function getArticleItem(item_id) {
       header = "Example 2 of 2";
       if(["featureAttribution", "typicality"].includes(exp.condition)) {
           objimagehtml = "<center><img src = 'shared/images/" + promptData[exp.condition]["exampleImage2"] + "' style='height:225px;border:1px solid black'></center>";
+          contextsentence = "<center><br>"+contextsentence+"</center>";
         }
     }
 
@@ -323,7 +325,7 @@ function getArticleItem(item_id) {
       if(exp.condition == "goalPlausibility") {
         contextsentence = "<b>" + this.stim.goal + "</b> <br> <br> How plausible is it that <b>the motivation</b> above could have given rise to <u>the rule</u> below? <br> <br> <u>" + this.stim.ruleRendered + "</u> <br>"
       } else {
-        contextsentence = "Does this object exhibit the following quality? <br><br> <b>" + characteristic + "</b>"
+        contextsentence = "<br><center>Does this object exhibit the following quality? <br> <b>" + stim.characteristic + "</b></center>"
         objimagehtml = '<center><img src="../../shared/scenes/' + stim.scene + '/images/' + stim.object + '.jpg" style="height:330px;"></center>';
       }
 
@@ -484,7 +486,7 @@ function init() {
     if(["featureAttribution", "typicality"].includes(exp.condition)) {
       exp.all_stims = _.shuffle(trialArray).slice(0,72);
     } else {
-      exp.all_stims = _.shuffle(trialArray)
+      exp.all_stims = _.shuffle(trialArray).slice(0,72)
     }
 
     // console.log(exp.all_stims)
