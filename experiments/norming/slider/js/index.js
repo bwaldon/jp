@@ -15,7 +15,7 @@ var promptData = {
     "exampleQ2" : "<center> Is this object a water bottle? </center>",
     "exampleImage2" : "bonfire.jpg",
     "example2Error" : "Are you sure? This doesn't look like any water bottle we've seen before.",
-    "briefDetail" : "In this study, you'll see images on the screen and provide judgments about those images. The study should take roughly 5 minutes to complete. Please pay attention, and thanks for participating!"
+    "briefDetail" : "In this study, you'll see images on the screen and provide judgments about those images. The study should take roughly 7 minutes to complete. Please pay attention, and thanks for participating!"
   },
 
   "featureAttribution": {
