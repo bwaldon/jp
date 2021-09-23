@@ -30,7 +30,7 @@ var promptData = {
     "exampleQ2" : "<center>Does this object exhibit the following quality? <br> <b>Consumable as food.</b></center>",
     "exampleImage2" : "bonfire.jpg",
     "example2Error" : "Are you sure? We've never heard of anyone eating a bonfire before.",
-    "briefDetail" : "In this study, you'll see images on the screen and provide judgments about those images. The study should take roughly 5 minutes to complete. Please pay attention, and thanks for participating!"
+    "briefDetail" : "In this study, you'll see images on the screen and provide judgments about those images. The study should take roughly 8 minutes to complete. Please pay attention, and thanks for participating!"
   },
 
   "rulePlausibility": {
